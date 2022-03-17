@@ -2,7 +2,8 @@
 
 # Changes
 
-Version 2.0.0 introduces uses wait_for_it script for the cluster startup
+Version 2.1.0 adds hadoop-release image only for getting proper hadoop binary release (arm64/amd64) and it uses openjdk:8-jdk-slim-buster as base image to avoid the installation of JDK.
+In this version, arm64 and amd64 are supported.
 
 # Hadoop Docker
 
