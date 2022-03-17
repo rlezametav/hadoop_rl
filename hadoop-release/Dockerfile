@@ -1,7 +1,6 @@
-FROM ubuntu:focal
+FROM openjdk:8-jdk-slim-buster
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-      openjdk-8-jdk \
       net-tools \
       curl \
       netcat \
