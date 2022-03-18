@@ -1,10 +1,12 @@
 # Hadoop on Docker
 
+How to Run Hadoop on macOS (Apple M1 and Intel CPU) by One Command
+
 ## Platforms supported
 ARM64 (Apple Silicon) and AMD64 (Intel)
 
 ## Requirement
-Docker Desktop is required (and it is the easiest way to get almost everything work on your laptop).
+Docker Desktop is required (and it is the easiest way to get Docker work on your laptop).
 For macOS (Apple M1), [Docker Desktop](https://desktop.docker.com/mac/main/arm64/Docker.dmg)
 For macOS (Intel), [Docker Desktop](https://desktop.docker.com/mac/main/amd64/Docker.dmg)
 
@@ -32,7 +34,10 @@ It takes a few minutes to completely start the whole Hadoop cluster for the firs
 
 ## Run Example Map-Reduced Job on the Cluster
 
-Run example wordcount job. Put your `jar` file in the `./jobs` directory and then using the following commands to commit the job.
+Run example wordcount job. 
+The `WordCount.jar` is located in `./jobs/jars` directory . 
+
+Typing the command below to commit the job.
 ```
 ./hdfs dfs -mkdir -p /input
 ./hdfs dfs -copyFromLocal -f /app/data/README.txt /input/
@@ -57,9 +62,13 @@ You may need to remove `/output` first if it already exists using command `./had
 
 ## How to Run Your Own Jobs 
 
-Using `Eclipse` or other IDEs to generate a `jar` file. Copy it to `jobs/jars`. For example, if your `jar` file name is `HellowWord.jar` and it is in the `jobs/jars`. The following command will submit your job to Hadoop.
+Using `Eclipse` or other IDEs to generate a `jar` file. Copy it to `./jobs/jars`. For example, if your `jar` file name is `HelloWorld.jar` and it is in the `./jobs/jars`. The following command will submit your job to Hadoop.
 ```
-./hadoop jar jars/HellowWord.jar HellowWord /input /output
+./hadoop jar jars/HelloWorld.jar HelloWorld /input /output
 ```
 
 And your data will go to `./jobs/data`, then using `./hdfs dfs -copyFromLocal` to copy it to HDFS.
+
+
+# Credits
+The repo is inspired by [@big-data-europe](https://github.com/big-data-europe/docker-hadoop). Without their work, it may take me days to get this done.
