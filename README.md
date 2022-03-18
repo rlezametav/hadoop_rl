@@ -30,15 +30,36 @@ docker-compose up -d
 ```
 It takes a few minutes to completely start the whole Hadoop cluster for the first time.
 
-## Run Map-Reduced Job on the Cluster
+## Run Example Map-Reduced Job on the Cluster
 
-Run example wordcount job:
+Run example wordcount job. Put your `jar` file in the `./jobs` directory and then using the following commands to commit the job.
 ```
-./hadoop jar WordCount.jar WordCount /input /output
+./hdfs dfs -mkdir -p /input
+./hdfs dfs -copyFromLocal -f /app/data/README.txt /input/
+./hadoop jar jars/WordCount.jar WordCount /input /output
 # View output (double quote is needed for zsh when star/asterisk occurs)
 ./hadoop fs -cat "/output/*"
 ```
 >Note
-You may need to remove `/output` if it already exists using command `./hadoop fs -rm -r /output`.
+You may need to remove `/output` first if it already exists using command `./hadoop fs -rm -r /output`.
 
-## Hadoop Comamnds
+## Common Hadoop Comamnds
+```bash
+# Create a directory
+./hdfs dfs -mkdir -p directory-name
+# Remove a directory and its sub-directories
+./hadoop fs -rm -r -f directory-name
+# Copy files from jobs/data to HDFS
+./hdfs dfs -copyFromLocal -f /app/data/README.txt /input/ 
+# View files
+./hdfs dfs -ls /input 
+```
+
+## How to Run Your Own Jobs 
+
+Using `Eclipse` or other IDEs to generate a `jar` file. Copy it to `jobs/jars`. For example, if your `jar` file name is `HellowWord.jar` and it is in the `jobs/jars`. The following command will submit your job to Hadoop.
+```
+./hadoop jar jars/HellowWord.jar HellowWord /input /output
+```
+
+And your data will go to `./jobs/data`, then using `./hdfs dfs -copyFromLocal` to copy it to HDFS.
