@@ -1,64 +1,44 @@
-[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/big-data-europe/Lobby)
+# Hadoop on Docker
 
-# Changes
+## Platforms supported
+ARM64 (Apple Silicon) and AMD64 (Intel)
 
-Version 2.1.0 adds hadoop-release image only for getting proper hadoop binary release (arm64/amd64) and it uses openjdk:8-jdk-slim-buster as base image to avoid the installation of JDK.
-In this version, arm64 and amd64 are supported.
+## Requirement
+Docker Desktop is required (and it is the easiest way to get almost everything work on your laptop).
+For macOS (Apple M1), [Docker Desktop](https://desktop.docker.com/mac/main/arm64/Docker.dmg)
+For macOS (Intel), [Docker Desktop](https://desktop.docker.com/mac/main/amd64/Docker.dmg)
 
-# Hadoop Docker
-
-## Supported Hadoop Versions
-See repository branches for supported hadoop versions
-
-## Quick Start
-
-To deploy an example HDFS cluster, run:
+### Docker Test
+If Docker Desktop is installed properly, you should be able to run the following command:
 ```
-  docker-compose up
+docker run hello-world
 ```
+And see the output like:
+```
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+... ...
+```
+
+## Start Hadoop Cluster
+Go to terminal and clone the git repo to your computer:
+
+```bash
+git clone git@github.com:wxw-matt/docker-hadoop.git ~/docker-hadoop
+cd ~/docker-hadoop
+docker-compose up -d
+```
+It takes a few minutes to completely start the whole Hadoop cluster for the first time.
+
+## Run Map-Reduced Job on the Cluster
 
 Run example wordcount job:
 ```
-  make wordcount
+./hadoop jar WordCount.jar WordCount /input /output
+# View output (double quote is needed for zsh when star/asterisk occurs)
+./hadoop fs -cat "/output/*"
 ```
+>Note
+You may need to remove `/output` if it already exists using command `./hadoop fs -rm -r /output`.
 
-Or deploy in swarm:
-```
-docker stack deploy -c docker-compose-v3.yml hadoop
-```
-
-`docker-compose` creates a docker network that can be found by running `docker network list`, e.g. `dockerhadoop_default`.
-
-Run `docker network inspect` on the network (e.g. `dockerhadoop_default`) to find the IP the hadoop interfaces are published on. Access these interfaces with the following URLs:
-
-* Namenode: http://<dockerhadoop_IP_address>:9870/dfshealth.html#tab-overview
-* History server: http://<dockerhadoop_IP_address>:8188/applicationhistory
-* Datanode: http://<dockerhadoop_IP_address>:9864/
-* Nodemanager: http://<dockerhadoop_IP_address>:8042/node
-* Resource manager: http://<dockerhadoop_IP_address>:8088/
-
-## Configure Environment Variables
-
-The configuration parameters can be specified in the hadoop.env file or as environmental variables for specific services (e.g. namenode, datanode etc.):
-```
-  CORE_CONF_fs_defaultFS=hdfs://namenode:8020
-```
-
-CORE_CONF corresponds to core-site.xml. fs_defaultFS=hdfs://namenode:8020 will be transformed into:
-```
-  <property><name>fs.defaultFS</name><value>hdfs://namenode:8020</value></property>
-```
-To define dash inside a configuration parameter, use triple underscore, such as YARN_CONF_yarn_log___aggregation___enable=true (yarn-site.xml):
-```
-  <property><name>yarn.log-aggregation-enable</name><value>true</value></property>
-```
-
-The available configurations are:
-* /etc/hadoop/core-site.xml CORE_CONF
-* /etc/hadoop/hdfs-site.xml HDFS_CONF
-* /etc/hadoop/yarn-site.xml YARN_CONF
-* /etc/hadoop/httpfs-site.xml HTTPFS_CONF
-* /etc/hadoop/kms-site.xml KMS_CONF
-* /etc/hadoop/mapred-site.xml  MAPRED_CONF
-
-If you need to extend some other configuration file, refer to base/entrypoint.sh bash script.
+## Hadoop Comamnds

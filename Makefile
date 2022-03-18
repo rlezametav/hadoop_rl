@@ -1,6 +1,9 @@
 DOCKER_NETWORK = docker-hadoop_default
 ENV_FILE = hadoop.env
-current_branch = "2.1.0-hadoop3.3.1-java8"
+current_branch = 2.1.0-hadoop3.3.1-java8
+base:
+	docker build -t wxwmatt/hadoop-base:$(current_branch) ./base
+
 build:
 	docker build -t wxwmatt/hadoop-release:$(current_branch) ./hadoop-release
 	docker build -t wxwmatt/hadoop-base:$(current_branch) ./base
