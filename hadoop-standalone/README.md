@@ -1,4 +1,9 @@
 # Hadoop Standalone
+## Build standalone image
+
+```bash
+docker build -t wxwmatt/hadoop-standalone:2.1.0-hadoop3.3.1-java8 . 
+```
 
 ## Run WordCount Job
 Every time when a job is being committed, a new input and a new output directory will be created.
