@@ -1,5 +1,8 @@
 # Hadoop on Docker
 
+See [Standalone mode](https://github.com/wxw-matt/docker-hadoop/blob/master/hadoop-standalone/README.md)
+
+
 How to Run Hadoop on macOS (Apple M1 and Intel CPU) by One Command
 
 ## Platforms supported
@@ -32,7 +35,47 @@ docker-compose up -d
 ```
 It takes a few minutes to completely start the whole Hadoop cluster for the first time.
 
-## Run Example Map-Reduced Job on the Cluster
+## How to Copy Files from Host Computer to HDSF and HDFS to Local System
+
+For example, if you want to copy a file called `Test.txt` from the host computer to HDFS, the file first should be copied to `./jars/data` and you can use the command: `./hdfs dfs -copyFromLocal -f /app/data/Test.txt /input/` to copy it to `/input` in HDFS.
+
+The directories mappings between your computer and the container are:
+```
+./jobs/jars => /app/jars
+./jobs/data => /app/data
+./jobs/res => /app/res
+```
+That means any files in `./jobs/jars` are accessibile in the container through the path `/app/jars`,
+any files in `./jobs/data` are accessibile in the container through the path `/app/data`. 
+
+Example:
+```bash
+# !! Go to docker-hadoop directory first
+# Create a file on the host computer
+cat > mytest.txt <<EOF
+This is the first line.
+This is the second line.
+The last line comes here.
+EOF
+
+# Copy it to ./jobs/data
+cp mytest.txt ./jobs/data
+./hdfs dfs -mkdir -p /mytest_input
+./hdfs dfs -copyFromLocal -f /app/data/mytest.txt /mytest_input/
+./hadoop fs -cat /mytest_input/mytest.txt
+# Remove the output directory, otherwise you may get an error "Output directory hdfs://namenode:9000/mytest_output already exists"
+./hdfs dfs -rm -r -f /mytest_output
+# Run a job
+./hadoop jar jars/WordCount.jar WordCount /mytest_input /mytest_output
+# Remove local output directory
+rm -rf ./jobs/res/mytest_output
+# Copy output to your computer
+./hdfs dfs -copyToLocal /mytest_output /app/res/
+# View output from host computer
+cat ./jobs/res/mytest_output/*
+```
+
+## Run the Example Map-Reduced Job on the Cluster
 
 Run example wordcount job. 
 The `WordCount.jar` is located in `./jobs/jars` directory . 
@@ -47,6 +90,22 @@ Typing the command below to commit the job.
 ```
 >Note
 You may need to remove `/output` first if it already exists using command `./hadoop fs -rm -r /output`.
+
+## Monitor Hadoop Cluster by WebUI
+
+Namenode:  http://localhost:9870
+
+Datanode:  http://localhost:9864
+
+Resourcemanager:  http://localhost:8088
+
+Nodemanager:  http://localhost:8042
+
+Historyserver:  http://localhost:8188
+
+>Note
+If you are redirected to a URL like `http://119e8b128bd5:8042/` or `http://resourcemanager:8088/`, change the host name to localhost (i.e. `http://localhost:8042/`) and it will work.
+This is because Docker containers use their own IPs which are mapped to different names.
 
 ## Common Hadoop Comamnds
 ```bash

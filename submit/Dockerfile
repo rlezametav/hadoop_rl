@@ -1,4 +1,4 @@
-FROM wxwmatt/hadoop-base:2.1.0-hadoop3.3.1-java8
+FROM wxwmatt/hadoop-base:2.1.1-hadoop3.3.1-java8
 
 COPY WordCount.jar /opt/hadoop/applications/WordCount.jar
 
