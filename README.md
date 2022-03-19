@@ -72,3 +72,7 @@ And your data will go to `./jobs/data`, then using `./hdfs dfs -copyFromLocal` t
 
 # Credits
 The repo is inspired by [@big-data-europe](https://github.com/big-data-europe/docker-hadoop). Without their work, it may take me days to get this done.
+
+
+# References:
+1. https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
