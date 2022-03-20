@@ -1,5 +1,8 @@
 # Hadoop on Docker
 
+>Note
+Please pull the latest code by using `git pull` before try to run.
+
 See [Standalone mode](https://github.com/wxw-matt/docker-hadoop/blob/master/hadoop-standalone/README.md)
 
 
