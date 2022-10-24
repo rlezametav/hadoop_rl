@@ -1,13 +1,16 @@
 FROM wxwmatt/hadoop-base:2.1.1-hadoop3.3.1-java8
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+RUN apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
       build-essential \
       iputils-ping \
-      wget \
+      wget
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
       python3.7-dev \
       python3.7 \
       python3-pip
- 
+
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
 RUN pip3 install wheel
@@ -15,7 +18,29 @@ RUN pip3 install setuptools
 RUN pip3 install py4j
 RUN pip3 install pyspark
 RUN pip3 install numpy
+RUN pip3 install pandas
 
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+      gcc \
+      git-core \
+      libffi-dev
+
+RUN pip3 install notebook
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+      libjpeg-dev \
+      libpcre3 \
+      libpcre3-dev \
+      autoconf \
+      libtool \
+      pkg-config\
+      zlib1g-dev \
+      libssl-dev \
+      libexpat1-dev \
+      libxslt1.1\
+      gnuplot
+
+RUN pip3 install matplotlib
 
 HEALTHCHECK CMD curl -f http://localhost:9870/ || exit 1
 
