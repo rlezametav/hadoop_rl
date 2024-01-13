@@ -83,20 +83,20 @@ services:
     env_file:
       - ./hadoop.env
 
-  postgres:
-    image: postgres:latest
-    container_name: postgres13
-    restart: always
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./jobs:/app
-    ports:
-      - '5432:5432'
-    env_file:
-      - ./postgres.env
+  # postgres:
+  #   image: postgres:latest
+  #   container_name: postgres13
+  #   restart: always
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #     - ./jobs:/app
+  #   ports:
+  #     - '5432:5432'
+  #   env_file:
+  #     - ./postgres.env
 
 volumes:
   hadoop_namenode:
   hadoop_datanode:
   hadoop_historyserver:
-  postgres_data:
+  # postgres_data:

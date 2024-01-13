@@ -19,6 +19,7 @@ RUN pip3 install py4j
 RUN pip3 install pyspark
 RUN pip3 install numpy
 RUN pip3 install pandas
+RUN pip3 install mrjob
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
       gcc \

@@ -4,3 +4,4 @@ data/
 .DS_Store
 *.class
 res/
+.python_history
